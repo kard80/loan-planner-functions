@@ -6,5 +6,8 @@ import {toNumberFormat} from "./format";
  * @return {number}
  */
 export function maximumLoanAmount(salary: number): string {
-  return toNumberFormat((salary * 0.4) * 1000000 / 5000);
+  if (!salary) {
+    return "0.00";
+  }
+  return toNumberFormat((salary * 0.4) * 1000000 / 4350);
 }
