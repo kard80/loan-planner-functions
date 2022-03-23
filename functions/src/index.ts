@@ -1,28 +1,28 @@
 import * as functions from "firebase-functions";
-import {maximumLoanAmount} from "./services/calculate";
-import {ServicePayload} from "./types/serviceRequest";
+import * as express from "express";
+import * as cors from "cors";
+import {maxLoanAmount} from "./controllers/loan-amount";
+import {plannerCalculation} from "./controllers/planner-calculation";
 
-// Start writing Firebase Functions
-// https://firebase.google.com/docs/functions/typescript
-//
-export const helloWorld = functions.https.onRequest((request, response) => {
-  functions.logger.info("Hello logs!", {structuredData: true});
-  response.send("Hello from Firebase!");
-});
+const app = express();
 
-// TODO: Clean code and move to controllers
-export const maxLoanAmount = functions.https.onRequest((req, res) => {
-  const {salary} = req.query;
-  const value = maximumLoanAmount(Number(salary));
-  console.log("value: ", value);
-  const result: ServicePayload[] = [
-    {
-      label: "วงเงินกู้สูงสุด",
-      key: "maxLoan",
-      type: "string",
-      value: value,
-    },
-  ];
-  res.set("Access-Control-Allow-Origin", "*");
-  res.send(result);
-});
+// CORS config
+// const origins = "*"; 'https://loan-planning-app.web.app', 'http://localhost:3000
+const corsOptions: cors.CorsOptions = {
+  origin: (origin, callback) => {
+    // TODO: Implement origins
+    if (origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+};
+app.use(cors(corsOptions));
+// app.use(cors()); only test purpose
+
+app.get("/", (_req, res) => res.status(200).send("Hello World"));
+app.get("/maxLoanAmount", maxLoanAmount);
+app.get("/plannerCalculation", plannerCalculation);
+
+exports.app = functions.https.onRequest(app);
