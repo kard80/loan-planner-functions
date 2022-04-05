@@ -19,10 +19,10 @@ const corsOptions: cors.CorsOptions = {
   },
 };
 app.use(cors(corsOptions));
-// app.use(cors()); only test purpose
+// app.use(cors()); // only test purpose
 
 app.get("/", (_req, res) => res.status(200).send("Hello World"));
 app.get("/maxLoanAmount", maxLoanAmount);
-app.get("/plannerCalculation", plannerCalculation);
+app.get("/plannerCalculation", plannerCalculation); // http://localhost:5001/loan-planning-app/us-central1/app/plannerCalculation?loanAmount=3000000&interestRate=3&installment=12500
 
 exports.app = functions.https.onRequest(app);
