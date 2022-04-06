@@ -6,7 +6,7 @@ import {Converter} from "../helpers/converter";
 const converter = new Converter();
 
 export const plannerCalculation = (req: Request, res: Response): void => {
-  const {loanAmount, interestRate, installment/* , firstPayDate*/} = req.query;
+  const {loanAmount, interestRate, installment, month, year} = req.query;
   const payload: Output = <Output>{months: []};
   let remainingLoan: string = converter.toString(Number(loanAmount));
 
@@ -15,13 +15,17 @@ export const plannerCalculation = (req: Request, res: Response): void => {
     const remainingLoanNumber = converter.toNumber(remainingLoan);
     const interestRateNumber = Number(interestRate);
     const installmentNumber = Number(installment);
-    const interestAmountNumber = remainingLoanNumber * (30/365) * (interestRateNumber / 100); // interestAmount = remainingLoan * (dayOfMonth/365) * (interestRate/100)
+    // Find number of days from month
+    const daysOfMonth = converter.dateOfMonth(String(month), String(year));
+    // calculate things
+    const interestAmountNumber = remainingLoanNumber * (daysOfMonth/365) * (interestRateNumber / 100); // interestAmount = remainingLoan * (dayOfMonth/365) * (interestRate/100)
     const principalDistractNumber = installmentNumber - interestAmountNumber;
 
     // assign value
     const monthDetail: MonthDetail = {
       no: i.toString(),
       carryLoanAmount: remainingLoan,
+      dayOfMonth: String(daysOfMonth),
       installment: converter.toString(Number(installment)),
       interestRate: converter.toString(Number(interestRate)),
       principleDistract: converter.toString(principalDistractNumber),

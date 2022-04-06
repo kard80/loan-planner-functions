@@ -5,6 +5,7 @@ export type Output = {
 export type MonthDetail = {
     no: string,
     carryLoanAmount: string,
+    dayOfMonth: string,
     interestRate: string,
     interestAmount: string,
     installment: string,

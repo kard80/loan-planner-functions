@@ -1,3 +1,4 @@
+
 /**
  * Convert type to another type
  */
@@ -26,13 +27,27 @@ export class Converter {
     return typeof num === "number" && isFinite(num) ? num : 0;
   }
 
-  // /**
-  //  * Convert month and year to be date of month
-  //  * @param {string} month
-  //  * @param {year} year
-  //  * @return {string}
-  //  */
-  // toDateOfMonth(month: string, year: string): string {
-  //   return '';
-  // }
+  /**
+   * Convert month and year to be date of month
+   * @param {string} month
+   * @param {string} year optional
+   * @return {string}
+   */
+  dateOfMonth(month: string, year?: string): number {
+    const monthInt = Number(month);
+    const dayOfFeb = year && Number(year) % 4 === 0 ? 29 : 28;
+    switch (monthInt) {
+      case 1:
+      case 3:
+      case 5:
+      case 7:
+      case 8:
+      case 10:
+      case 12:
+        return 31;
+      case 2:
+        return dayOfFeb;
+    }
+    return 30;
+  }
 }
