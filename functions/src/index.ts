@@ -3,6 +3,7 @@ import * as express from "express";
 import * as cors from "cors";
 import {maxLoanAmount} from "./controllers/loan-amount";
 import {plannerCalculation} from "./controllers/planner-calculation";
+import {homeFeature} from "./controllers/home-features";
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(cors(corsOptions));
 // app.use(cors()); // only test purpose
 
 app.get("/", (_req, res) => res.status(200).send("Hello World"));
+app.get("/home-feature", homeFeature);
 app.get("/maxLoanAmount", maxLoanAmount);
 app.get("/plannerCalculation", plannerCalculation); // http://localhost:5001/loan-planning-app/us-central1/app/plannerCalculation?loanAmount=3000000&interestRate=3&installment=12500
 
